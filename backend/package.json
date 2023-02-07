@@ -7,5 +7,8 @@
     "start": "nodemon server.js"
   },
   "author": "Harsh Tewari",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^6.9.1"
+  }
 }
