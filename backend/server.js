@@ -1,11 +1,17 @@
 const express = require("express");
+const connectdb = require("./config/connectDB");
 const { chats } = require("./data/data");
 const app = express();
 const port = 5000;
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+connectdb();
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

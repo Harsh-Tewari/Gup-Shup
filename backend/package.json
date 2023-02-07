@@ -9,6 +9,7 @@
   "author": "Harsh Tewari",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "mongoose": "^6.9.1"
   }
 }
