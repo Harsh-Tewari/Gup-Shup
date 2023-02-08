@@ -1,22 +1,24 @@
 import {
-  Box,
   Button,
-  Container,
   FormControl,
   FormLabel,
   Input,
   InputGroup,
   InputRightElement,
-  Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const handleClick = (e) => {
     if (e.target.name === "showpass") {
@@ -24,7 +26,42 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = () => {};
+  const toast = useToast();
+
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      toast({
+        title: "Please Fill all the fields!",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        "/api/user/login",
+        { email, password },
+        { headers: { "content-type": "application/json" } }
+      );
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setLoading(false);
+      history.push("/chats");
+    } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+      setLoading(false);
+      return;
+    }
+  };
 
   return (
     <VStack spacing="5px" color="black">
@@ -68,7 +105,11 @@ const Login = () => {
         colorScheme="red"
         width="100%"
         style={{ marginTop: 15 }}
-        onClick={handleSubmit}
+        isLoading={loading}
+        onClick={() => {
+          setEmail("rajesh.kumar123@gmail.com");
+          setPassword("Rajesh@123");
+        }}
       >
         Guest Credentials
       </Button>
