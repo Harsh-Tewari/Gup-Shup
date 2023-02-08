@@ -1,6 +1,7 @@
 const express = require("express");
 const connectdb = require("./config/connectDB");
 const { chats } = require("./data/data");
+const userRoutes = require("./routes/userRoutes");
 const app = express();
 const port = 5000;
 const dotenv = require("dotenv");
@@ -12,6 +13,8 @@ app.listen(port, () => {
 });
 
 connectdb();
+
+app.use(express.json()); // app ko bataya ki frontend se json data accept kar lo
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -27,3 +30,5 @@ app.get("/api/chat/:id", (req, res) => {
   res.send(singleChat);
   res.send(chats);
 });
+
+app.use("/api/user", userRoutes);
