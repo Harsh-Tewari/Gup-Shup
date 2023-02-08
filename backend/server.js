@@ -5,6 +5,7 @@ const userRoutes = require("./routes/userRoutes");
 const app = express();
 const port = 5000;
 const dotenv = require("dotenv");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 dotenv.config();
 
@@ -32,3 +33,7 @@ app.get("/api/chat/:id", (req, res) => {
 });
 
 app.use("/api/user", userRoutes);
+
+//Error Handling Middleware endpoints
+app.use(notFound);
+app.use(errorHandler);
