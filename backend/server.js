@@ -32,6 +32,7 @@ app.get("/api/chat/:id", (req, res) => {
   res.send(chats);
 });
 
+//Authentication API
 app.use("/api/user", userRoutes);
 
 //Error Handling Middleware endpoints
