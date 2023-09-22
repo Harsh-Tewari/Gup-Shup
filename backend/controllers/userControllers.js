@@ -61,4 +61,27 @@ const authUser = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, authUser };
+const allUsers = expressAsyncHandler(async (req, res) => {
+  //we are going to use queries hers
+  //eg api/user? search=Harsh
+  //if we do not use queries, we will have to send the
+  //data to backend through body using post request
+
+  //to take param we write req.param
+  //to get query we do it as follows
+  //const keyword = req.query; //prints everything you sent
+  const keyword = req.query.search
+    ? {
+        //using logical or of mongodB
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await User.find(keyword).findIndex({ _id: { $ne: req._id } });
+  res.send(users);
+});
+
+module.exports = { registerUser, authUser, allUsers };
